@@ -18,7 +18,7 @@
 
     <modules>
         <module>redislock</module>
-        <module>redislock-spring-boot-configuration</module>
+        <module>redislock-spring-boot-autoconfigure</module>
         <module>redislock-spring-boot-starter</module>
 
     </modules>
