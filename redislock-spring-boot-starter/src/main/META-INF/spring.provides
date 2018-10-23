@@ -1,0 +1,1 @@
+provides: redislock-spring-boot-autoconfigure,redislock
