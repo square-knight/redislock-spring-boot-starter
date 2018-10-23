@@ -18,7 +18,7 @@ public class TestService {
     public String myTurn(String speak){
         return speak;
     }
-    @Fallback(value = "shutup1",replaceReturn = true)
+//    @Fallback(value = "shutup",replaceReturn = true)
     private String notYourTurn(RedisLockJoinPoint redisLockJoinPoint){
         return "It's not your turn!!!";
     }
