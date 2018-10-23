@@ -34,23 +34,12 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.redislock</groupId>
-            <artifactId>redislock</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+        <groupId>com.redislock</groupId>
+        <artifactId>redislock</artifactId>
+        <optional>true</optional>
+    </dependency>
 
 
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <!-- Import dependency management from Spring Boot -->
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.0.6.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
 </project>

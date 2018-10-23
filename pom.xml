@@ -22,6 +22,31 @@
         <module>redislock-spring-boot-starter</module>
 
     </modules>
-
-
+    <properties>
+        <redislock.version>1.0.0</redislock.version>
+        <redislock-spring-boot-autoconfigure.version>1.0.0</redislock-spring-boot-autoconfigure.version>
+        <spring-boot.version>2.0.6.RELEASE</spring-boot.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.redislock</groupId>
+                <artifactId>redislock</artifactId>
+                <version>${redislock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redislock</groupId>
+                <artifactId>redislock-spring-boot-autoconfigure</artifactId>
+                <version>${redislock-spring-boot-autoconfigure.version}</version>
+            </dependency>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
