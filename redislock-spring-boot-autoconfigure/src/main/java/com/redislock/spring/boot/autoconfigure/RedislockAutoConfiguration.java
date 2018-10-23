@@ -2,14 +2,13 @@ package com.redislock.spring.boot.autoconfigure;
 
 import com.redislock.MyRedisTemplate;
 import com.redislock.RedisLock;
-import com.redislock.RedisLockBeanPostProcessor;
+import com.redislock.RedisLockProxyBeanPostProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +24,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  * Time: 下午4:56
  */
 @Configuration
-@ConditionalOnClass({MyRedisTemplate.class,RedisLock.class,RedisLockBeanPostProcessor.class})
+@ConditionalOnClass({MyRedisTemplate.class,RedisLock.class,RedisLockProxyBeanPostProcessor.class})
 @ConditionalOnBean(RedisTemplate.class)
 @EnableConfigurationProperties(RedislockProperties.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
@@ -67,8 +66,8 @@ public class RedislockAutoConfiguration {
     }
     @Bean
     @ConditionalOnMissingBean
-    RedisLockBeanPostProcessor redisLockBeanPostProcessor(RedisLock redisLock){
-        RedisLockBeanPostProcessor redisLockBeanPostProcessor = new RedisLockBeanPostProcessor();
+    RedisLockProxyBeanPostProcessor redisLockBeanPostProcessor(RedisLock redisLock){
+        RedisLockProxyBeanPostProcessor redisLockBeanPostProcessor = new RedisLockProxyBeanPostProcessor();
         redisLockBeanPostProcessor.setRedisLock(redisLock);
         if(null != properties.getPrefix()){
             redisLockBeanPostProcessor.setPrifex(properties.getPrefix());

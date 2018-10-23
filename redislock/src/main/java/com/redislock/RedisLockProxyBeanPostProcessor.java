@@ -1,6 +1,7 @@
 package com.redislock;
 
 import com.redislock.annotation.Fallback;
+import com.redislock.annotation.FallbackHandler;
 import com.redislock.annotation.RedisSynchronized;
 import com.redislock.exception.IllegalReturnException;
 import com.redislock.exception.LockFailedException;
@@ -8,6 +9,9 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.InvocationHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +25,7 @@ import java.util.Map;
  * Time: 上午10:18
  */
 
-public class RedisLockBeanPostProcessor implements BeanPostProcessor {
+public class RedisLockProxyBeanPostProcessor implements BeanPostProcessor,ApplicationContextAware {
     private String prifex = "";
     public String getPrifex() {
         return prifex;
@@ -36,23 +40,31 @@ public class RedisLockBeanPostProcessor implements BeanPostProcessor {
         this.redisLock = redisLock;
     }
 
-    private Map<String,ReflectiveMethodInvocation> reflectiveFallbackInvocations = new HashMap<>();
+    private Map<String,ReflectiveMethodInvocation> fallbackInvocations = new HashMap<String,ReflectiveMethodInvocation>();
+
+    private Map<String,ReflectiveMethodInvocation> fallbackHandlerInvocations = new HashMap<String,ReflectiveMethodInvocation>();
+
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-
-
-
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        fillInvocationMap(bean,bean.hashCode()+"",fallbackInvocations);
+        return bean;
+    }
+    void fillInvocationMap(Object bean,String keyPrefix,Map<String,ReflectiveMethodInvocation> map){
         Class<?> aClass = bean.getClass();
         for (Method method : aClass.getDeclaredMethods()) {
             if(method.isAnnotationPresent(Fallback.class)){
                 Fallback annotation = method.getAnnotation(Fallback.class);
-                String key = annotation.name();
+                String key = keyPrefix+annotation.value();
                 method.setAccessible(true);
                 ReflectiveMethodInvocation reflectiveMethodInvocation = new ReflectiveMethodInvocation(bean, method, null,annotation.replaceReturn());
-                reflectiveFallbackInvocations.put(key,reflectiveMethodInvocation);
+                map.put(key,reflectiveMethodInvocation);
             }
-
-
+        }
+    }
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        Class<?> aClass = bean.getClass();
+        for (Method method : aClass.getDeclaredMethods()) {
             if(method.isAnnotationPresent(RedisSynchronized.class)){
                 Enhancer enhancer = new Enhancer();
                 enhancer.setSuperclass(bean.getClass());
@@ -61,6 +73,16 @@ public class RedisLockBeanPostProcessor implements BeanPostProcessor {
             }
         }
         return bean;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(FallbackHandler.class);
+        for (Object bean :
+                beansWithAnnotation.values()) {
+            fillInvocationMap(bean,"",fallbackHandlerInvocations);
+
+        }
     }
 
 
@@ -85,9 +107,12 @@ public class RedisLockBeanPostProcessor implements BeanPostProcessor {
             }
             RedisSynchronized annotation = method.getAnnotation(RedisSynchronized.class);
             String fallbackMethod = annotation.fallbackMethod();
-            ReflectiveMethodInvocation invocation = reflectiveFallbackInvocations.get(fallbackMethod);
+            ReflectiveMethodInvocation invocation = fallbackInvocations.get(o.hashCode()+fallbackMethod);
+
             if(null == invocation){
-                throw new NoSuchMethodException("no method named \"" + fallbackMethod +"\"");
+                invocation = fallbackHandlerInvocations.get(fallbackMethod);
+                if(null == invocation)
+                    throw new NoSuchMethodException("no method named \"" + fallbackMethod +"\"");
             }
             RedisLockJoinPoint redisLockJoinPoint = new RedisLockJoinPoint(o, method, args);
 
@@ -98,7 +123,7 @@ public class RedisLockBeanPostProcessor implements BeanPostProcessor {
                 }
                 return invocation.proceed(redisLockJoinPoint);
             }else try {
-                invocation.proceed();
+                invocation.proceed(redisLockJoinPoint);
             } catch (Throwable t) {
                 t.printStackTrace();
             }

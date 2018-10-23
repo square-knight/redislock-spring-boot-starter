@@ -14,6 +14,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Fallback {
-    String name() default "fallback";
+    String value() default "fallback";
     boolean replaceReturn() default false;
 }

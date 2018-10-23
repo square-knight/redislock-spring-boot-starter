@@ -43,7 +43,7 @@ public class RedisLock {
         this.myRedisTemplate = myRedisTemplate;
     }
 
-    private Set<String> aliveLocks = new ConcurrentSet<>();
+    private Set<String> aliveLocks = new ConcurrentSet<String>();
 
     Timer timer = new Timer();
 
@@ -59,9 +59,10 @@ public class RedisLock {
 //    @Scheduled(cron = "*/10 * * * * ?")
     private void keeplockAlive(){
         if(aliveLocks.size() > 0){
-            aliveLocks.forEach(key->{
+            for (String key:
+            aliveLocks) {
                 myRedisTemplate.expire(key,timeout);
-            });
+            }
         }
     }
 
