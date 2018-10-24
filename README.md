@@ -9,6 +9,8 @@
 
 # Documentation
 
+简单的事例参照redislock-spring-boot-starter-test
+
 1. 依赖引入
 
 ```
