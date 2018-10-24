@@ -17,7 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * Usage:
- * <p>
+ * RedislockAutoConfiguration
  * Description:
  * User: fuxinpeng
  * Date: 2018-10-22

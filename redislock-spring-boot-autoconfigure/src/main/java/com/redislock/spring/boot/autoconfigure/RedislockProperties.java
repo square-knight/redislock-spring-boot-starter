@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Usage:
- * <p>
+ * RedislockProperties
  * Description:
  * User: fuxinpeng
  * Date: 2018-10-22
