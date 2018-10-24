@@ -1,5 +1,8 @@
-package com.redislock;
+package com.redislock.autoproxy;
 
+import com.redislock.RedisLock;
+import com.redislock.RedisLockJoinPoint;
+import com.redislock.ReflectiveMethodInvocation;
 import com.redislock.annotation.Fallback;
 import com.redislock.annotation.FallbackHandler;
 import com.redislock.annotation.RedisSynchronized;
@@ -18,14 +21,15 @@ import java.util.Map;
 
 /**
  * Usage:
- * <p>
+ * An auto proxy creator that builds proxies for specific beans
+ * based on detected Advisors for each bean.
  * Description:
  * User: fuxinpeng
  * Date: 2018-10-10
  * Time: 上午10:18
  */
 
-public class RedisLockProxyBeanPostProcessor implements BeanPostProcessor,ApplicationContextAware {
+public class RedisLockAutoProxyCreator implements BeanPostProcessor,ApplicationContextAware {
     private String prifex = "";
     public String getPrifex() {
         return prifex;
@@ -49,7 +53,7 @@ public class RedisLockProxyBeanPostProcessor implements BeanPostProcessor,Applic
         fillInvocationMap(bean,bean.hashCode()+"",fallbackInvocations);
         return bean;
     }
-    void fillInvocationMap(Object bean,String keyPrefix,Map<String,ReflectiveMethodInvocation> map){
+    private void fillInvocationMap(Object bean,String keyPrefix,Map<String,ReflectiveMethodInvocation> map){
         Class<?> aClass = bean.getClass();
         for (Method method : aClass.getDeclaredMethods()) {
             if(method.isAnnotationPresent(Fallback.class)){
@@ -107,25 +111,27 @@ public class RedisLockProxyBeanPostProcessor implements BeanPostProcessor,Applic
             }
             RedisSynchronized annotation = method.getAnnotation(RedisSynchronized.class);
             String fallbackMethod = annotation.fallbackMethod();
-            ReflectiveMethodInvocation invocation = fallbackInvocations.get(o.hashCode()+fallbackMethod);
+            if(!"".equals(fallbackMethod)){
+                ReflectiveMethodInvocation invocation = fallbackInvocations.get(o.hashCode()+fallbackMethod);
 
-            if(null == invocation){
-                invocation = fallbackHandlerInvocations.get(fallbackMethod);
-                if(null == invocation)
-                    throw new NoSuchMethodException("no method named \"" + fallbackMethod +"\"");
-            }
-            RedisLockJoinPoint redisLockJoinPoint = new RedisLockJoinPoint(proxy, method, args);
-
-            if(invocation.isReplaceReturn()) {
-                if(!method.getReturnType().isAssignableFrom(invocation.getMethod().getReturnType())){
-                    throw new IllegalReturnException("return type illegal,require:"+method.getReturnType()
-                            +",but returned:"+invocation.getMethod().getReturnType());
+                if(null == invocation){
+                    invocation = fallbackHandlerInvocations.get(fallbackMethod);
+                    if(null == invocation)
+                        throw new NoSuchMethodException("no method named \"" + fallbackMethod +"\"");
                 }
-                return invocation.proceed(redisLockJoinPoint);
-            }else try {
-                invocation.proceed(redisLockJoinPoint);
-            } catch (Throwable t) {
-                t.printStackTrace();
+                RedisLockJoinPoint redisLockJoinPoint = new RedisLockJoinPoint(proxy, method, args);
+
+                if(invocation.isReplaceReturn()) {
+                    if(!method.getReturnType().isAssignableFrom(invocation.getMethod().getReturnType())){
+                        throw new IllegalReturnException("return type illegal,require:"+method.getReturnType()
+                                +",but returned:"+invocation.getMethod().getReturnType());
+                    }
+                    return invocation.proceed(redisLockJoinPoint);
+                }else try {
+                    invocation.proceed(redisLockJoinPoint);
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
             }
             throw new LockFailedException("lock failed");
         }

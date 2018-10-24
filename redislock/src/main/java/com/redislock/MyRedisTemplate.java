@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Usage:
- * <p>
+ * customized redis template
  * Description:
  * User: fuxinpeng
  * Date: 2018-10-10

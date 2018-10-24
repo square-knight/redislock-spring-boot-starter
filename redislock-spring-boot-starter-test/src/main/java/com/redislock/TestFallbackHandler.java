@@ -5,7 +5,7 @@ import com.redislock.annotation.FallbackHandler;
 
 /**
  * Usage:
- * <p>
+ * test global fallback handle
  * Description:
  * User: fuxinpeng
  * Date: 2018-10-23

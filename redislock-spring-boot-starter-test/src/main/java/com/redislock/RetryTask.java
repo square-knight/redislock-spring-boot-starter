@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Usage:
- * <p>
+ * test use the async to retry
  * Description:
  * User: fuxinpeng
  * Date: 2018-10-24

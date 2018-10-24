@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 
 /**
  * Usage:
- * <p>
+ * Invokes the target object using reflection.
  * Description:
  * User: fuxinpeng
  * Date: 2018-10-18

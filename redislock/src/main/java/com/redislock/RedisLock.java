@@ -8,7 +8,16 @@ import java.util.TimerTask;
 
 /**
  * Usage:
- * <p>
+ * based on redis command SET (with the last param NX),DEL,EXPIRE
+ *
+ * once locked means that the specific key seted with expired time
+ * default {@code LOCK_TIMEOUT} 20s
+ *
+ * once unlock means that specific key is removed from redis
+ *
+ * if the lock not release over {@code LOCK_HEART_BEAT} the expired
+ * time will reset to {@code LOCK_TIMEOUT} until unlock see {@link #init()}
+ *
  * Description:
  * User: fuxinpeng
  * Date: 2018-10-10
