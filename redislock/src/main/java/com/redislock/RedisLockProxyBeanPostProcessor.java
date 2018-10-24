@@ -114,7 +114,7 @@ public class RedisLockProxyBeanPostProcessor implements BeanPostProcessor,Applic
                 if(null == invocation)
                     throw new NoSuchMethodException("no method named \"" + fallbackMethod +"\"");
             }
-            RedisLockJoinPoint redisLockJoinPoint = new RedisLockJoinPoint(o, method, args);
+            RedisLockJoinPoint redisLockJoinPoint = new RedisLockJoinPoint(proxy, method, args);
 
             if(invocation.isReplaceReturn()) {
                 if(!method.getReturnType().isAssignableFrom(invocation.getMethod().getReturnType())){

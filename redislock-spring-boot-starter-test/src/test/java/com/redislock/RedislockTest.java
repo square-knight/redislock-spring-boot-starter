@@ -21,6 +21,16 @@ public class RedislockTest {
     private TestService testService;
     @Test
     public void testLock(){
-        System.out.println(testService.myTurn("bulaha"));
+        try{
+            System.out.println(testService.myTurn("bulaha",0));
+        }catch (Exception e){
+            System.out.println("锁失败");
+        }
+
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
