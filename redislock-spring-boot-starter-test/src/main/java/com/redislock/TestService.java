@@ -29,7 +29,7 @@ public class TestService {
         Object[] arguments = redisLockJoinPoint.getArguments();
         int count = (int) arguments[1];
         arguments[1]=++count;
-        if(count <5){//失败后重试5次
+        if(count <5){//失败后重试4次
             retryTask.retry(redisLockJoinPoint);
         }
     }

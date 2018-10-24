@@ -45,7 +45,7 @@ public class RedisLock {
 
     private Set<String> aliveLocks = new ConcurrentSet<String>();
 
-    Timer timer = new Timer();
+    private final Timer timer = new Timer();
 
     @PostConstruct
     public void init(){
