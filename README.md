@@ -5,7 +5,7 @@
 # Features
 
 1. 分布式锁
-2. 锁降级
+2. 锁降级（支持锁重试）
 
 # Documentation
 
