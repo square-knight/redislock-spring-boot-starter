@@ -69,8 +69,7 @@ public @interface Fallback {
 - RedisLockJoinPoint加锁方法会自动注入此参数，类似切面方法的JoinPoint，不过比AspectJ更好的地方是不论这个参数在参数列表的
 哪个位置都会正确注入。利用RedisLockJoinPoint可以实现加锁重试，具体可见项目中redislock-spring-boot-starter-test的测试方法。
 
-注意：实现锁重试最好使用异步方式（如示例），如消息队列等。在降级方法中同步调用加锁方法虽然不会报错但会导致无用的方法栈堆积无法释放，如果
-重试很多可能会产生大问题。
+注意：实现锁重试最好使用异步方式（如示例），如消息队列等。在降级方法中同步调用加锁方法虽然也可以正常执行但会导致无用的方法栈堆积无法释放。
 
 5. @FallbackHandler
 
