@@ -7,9 +7,19 @@
 1. 分布式锁
 2. 锁降级（支持锁重试）
 
+# Quick Start
+
+1. 环境准备
+本地安装好redis，启动redis服务（默认端口）
+2. 下载代码
+从github克隆代码到本地，导入项目
+3. 运行测试用例
+运行redislock-spring-boot-starter-test里的RedislockTest测试用例
+
 # Documentation
 
 简单的示例参照redislock-spring-boot-starter-test
+由于并没有把jar包上传的maven中央仓库，所以克隆项目后请使用mvn install把jar包安装到本地。
 
 1. 依赖引入
 
