@@ -32,7 +32,7 @@
         </dependency>
 ```
 
-此项目依赖spring-data-redis请保证引入
+此项目依赖spring-data-redis请保证引入(请保证引入的版本>=2.0)
 
 ```
         <dependency>
