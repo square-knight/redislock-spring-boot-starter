@@ -19,6 +19,7 @@
 # Documentation
 
 简单的示例参照redislock-spring-boot-starter-test
+
 由于并没有把jar包上传的maven中央仓库，所以克隆项目后请使用mvn install把jar包安装到本地。
 
 1. 依赖引入
