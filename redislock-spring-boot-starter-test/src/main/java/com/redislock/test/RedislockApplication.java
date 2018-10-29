@@ -1,4 +1,4 @@
-package com.redislock;
+package com.redislock.test;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

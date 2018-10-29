@@ -8,10 +8,11 @@ import com.redislock.annotation.FallbackHandler;
 import com.redislock.annotation.RedisSynchronized;
 import com.redislock.exception.IllegalReturnException;
 import com.redislock.exception.LockFailedException;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.InvocationHandler;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -29,12 +30,11 @@ import java.util.Map;
  * Time: 上午10:18
  */
 
-public class RedisLockAutoProxyCreator implements BeanPostProcessor,ApplicationContextAware {
+public class RedisLockAutoProxyCreator implements BeanPostProcessor,ApplicationContextAware{
     private String prifex = "";
     public String getPrifex() {
         return prifex;
     }
-
     public void setPrifex(String prifex) {
         this.prifex = prifex;
     }
@@ -50,11 +50,11 @@ public class RedisLockAutoProxyCreator implements BeanPostProcessor,ApplicationC
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        fillInvocationMap(bean,bean.hashCode()+"",fallbackInvocations);
+        fillInvocationMap(bean,AopUtils.getTargetClass(bean).getName()+"",fallbackInvocations);
         return bean;
     }
     private void fillInvocationMap(Object bean,String keyPrefix,Map<String,ReflectiveMethodInvocation> map){
-        Class<?> aClass = bean.getClass();
+        Class<?> aClass = AopUtils.getTargetClass(bean);
         for (Method method : aClass.getDeclaredMethods()) {
             if(method.isAnnotationPresent(Fallback.class)){
                 Fallback annotation = method.getAnnotation(Fallback.class);
@@ -67,11 +67,11 @@ public class RedisLockAutoProxyCreator implements BeanPostProcessor,ApplicationC
     }
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        Class<?> aClass = bean.getClass();
+        Class<?> aClass =  AopUtils.getTargetClass(bean);
         for (Method method : aClass.getDeclaredMethods()) {
             if(method.isAnnotationPresent(RedisSynchronized.class)){
                 Enhancer enhancer = new Enhancer();
-                enhancer.setSuperclass(bean.getClass());
+                enhancer.setSuperclass(aClass);
                 enhancer.setCallback(new MyHandler(bean));
                 return enhancer.create();
             }
@@ -88,8 +88,6 @@ public class RedisLockAutoProxyCreator implements BeanPostProcessor,ApplicationC
 
         }
     }
-
-
     class MyHandler implements InvocationHandler {
         private Object o;
         MyHandler(Object o){
@@ -112,7 +110,7 @@ public class RedisLockAutoProxyCreator implements BeanPostProcessor,ApplicationC
             RedisSynchronized annotation = method.getAnnotation(RedisSynchronized.class);
             String fallbackMethod = annotation.fallbackMethod();
             if(!"".equals(fallbackMethod)){
-                ReflectiveMethodInvocation invocation = fallbackInvocations.get(o.hashCode()+fallbackMethod);
+                ReflectiveMethodInvocation invocation = fallbackInvocations.get(AopUtils.getTargetClass(o).getName()+fallbackMethod);
 
                 if(null == invocation){
                     invocation = fallbackHandlerInvocations.get(fallbackMethod);

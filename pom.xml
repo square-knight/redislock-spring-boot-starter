@@ -27,15 +27,9 @@
         <redislock.version>1.0.0</redislock.version>
         <redislock-spring-boot-autoconfigure.version>1.0.0</redislock-spring-boot-autoconfigure.version>
         <spring-boot.version>2.0.6.RELEASE</spring-boot.version>
-        <cglib.version>3.2.8</cglib.version>
     </properties>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>${cglib.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.redislock</groupId>
                 <artifactId>redislock</artifactId>

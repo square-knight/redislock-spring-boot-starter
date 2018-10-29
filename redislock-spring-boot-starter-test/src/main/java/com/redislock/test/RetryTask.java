@@ -1,5 +1,6 @@
-package com.redislock;
+package com.redislock.test;
 
+import com.redislock.RedisLockJoinPoint;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 

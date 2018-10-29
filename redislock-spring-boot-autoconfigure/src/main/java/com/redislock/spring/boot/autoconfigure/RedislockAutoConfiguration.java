@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,7 +25,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  * Time: 下午4:56
  */
 @Configuration
-@ConditionalOnClass({MyRedisTemplate.class,RedisLock.class,RedisLockAutoProxyCreator.class})
+@ConditionalOnClass({MyRedisTemplate.class,RedisLock.class,RedisLockAutoProxyCreator.class, Enhancer.class})
 @ConditionalOnBean(RedisTemplate.class)
 @EnableConfigurationProperties(RedislockProperties.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)

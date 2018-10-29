@@ -1,5 +1,6 @@
-package com.redislock;
+package com.redislock.test;
 
+import com.redislock.RedisLockJoinPoint;
 import com.redislock.annotation.Fallback;
 import com.redislock.annotation.FallbackHandler;
 

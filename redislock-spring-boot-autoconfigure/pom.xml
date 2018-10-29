@@ -37,8 +37,12 @@
         <groupId>com.redislock</groupId>
         <artifactId>redislock</artifactId>
         <optional>true</optional>
-    </dependency>
-
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <optional>true</optional>
+        </dependency>
 
     </dependencies>
 

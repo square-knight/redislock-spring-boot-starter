@@ -1,10 +1,15 @@
 package com.redislock;
 
+import com.redislock.test.RedislockApplication;
+import com.redislock.test.TestService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * Usage:
@@ -20,7 +25,8 @@ public class RedislockTest {
     @Autowired
     private TestService testService;
     @Test
-    public void testLock(){
+    public void testLock() throws NoSuchMethodException {
+        System.out.println("*****************************");
         try{
             System.out.println(testService.myTurn("bulaha",0));
         }catch (Exception e){
