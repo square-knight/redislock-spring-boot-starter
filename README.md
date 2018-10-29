@@ -1,3 +1,7 @@
+<p align="center">
+   <img src="https://github.com/square-knight/redislock-spring-boot-starter/master/doc/images/logo.jpg" width="150">     
+</p>
+
 # Introduction
 
 基于redis的分布式锁
@@ -31,15 +35,7 @@
             <version>1.0.0</version>
         </dependency>
 ```
-
-此项目依赖spring-data-redis请保证引入(请保证引入的版本>=2.0)
-
-```
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-```
+注意：Spring-boot版本要大于2.0.0
 
 2. 配置项
 
