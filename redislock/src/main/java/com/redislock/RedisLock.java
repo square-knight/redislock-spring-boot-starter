@@ -1,10 +1,10 @@
 package com.redislock;
 
-import io.netty.util.internal.ConcurrentSet;
 import javax.annotation.PostConstruct;
-import java.util.Set;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Usage:
@@ -52,7 +52,7 @@ public class RedisLock {
         this.myRedisTemplate = myRedisTemplate;
     }
 
-    private Set<String> aliveLocks = new ConcurrentSet<String>();
+    private Map<String,String> aliveLocks = new ConcurrentHashMap<String,String>();
 
     private final Timer timer = new Timer();
 
@@ -65,11 +65,11 @@ public class RedisLock {
             }
         },0,heartBeat);
     }
-//    @Scheduled(cron = "*/10 * * * * ?")
+    //    @Scheduled(cron = "*/10 * * * * ?")
     private void keeplockAlive(){
         if(aliveLocks.size() > 0){
             for (String key:
-            aliveLocks) {
+                    aliveLocks.keySet()) {
                 myRedisTemplate.expire(key,timeout);
             }
         }
@@ -87,14 +87,14 @@ public class RedisLock {
     public boolean lock(String key,boolean keepAlive){
         Boolean redisLock = myRedisTemplate.setifAbsent(key, "redisLock", timeout);
         if(redisLock && keepAlive){
-            aliveLocks.add(key);
+            aliveLocks.put(key,"");
         }
         return redisLock;
     }
     public boolean lock(String key,boolean keepAlive,long timeoutInMillis){
         Boolean redisLock = myRedisTemplate.setifAbsent(key, "redisLock", timeoutInMillis);
         if(redisLock && keepAlive){
-            aliveLocks.add(key);
+            aliveLocks.put(key,"");
         }
         return redisLock;
     }

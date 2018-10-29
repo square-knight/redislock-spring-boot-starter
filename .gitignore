@@ -4,6 +4,7 @@
 /.classpath
 /.factorypath
 /.idea
+/*/.idea
 /.project
 /.settings
 /nb*
