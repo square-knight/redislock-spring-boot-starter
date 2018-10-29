@@ -1,5 +1,18 @@
 <p align="center">
-   <img src="https://github.com/square-knight/redislock-spring-boot-starter/master/doc/images/logo.jpg" width="150">     
+   <img src="https://github.com/square-knight/redislock-spring-boot-starter/blob/master/doc/images/logo.jpg" width="150"/>
+   <h3 align="center">REDIS-LOCK</h3>
+   <p align="center">
+      基于redis的分布式锁
+      </br>
+      版本要求
+      </br>
+      spring-boot 2.0.0以上
+      </br>
+      jdk 1.6以上
+      </br>
+      redis 2.6.12以上
+      </br>
+   </p>
 </p>
 
 # Introduction
