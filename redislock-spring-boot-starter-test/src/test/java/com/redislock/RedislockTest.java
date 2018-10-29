@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -30,7 +31,7 @@ public class RedislockTest {
         try{
             System.out.println(testService.myTurn("bulaha",0));
         }catch (Exception e){
-            System.out.println("锁失败");
+            System.out.println(e.getMessage() + " 锁失败");
         }
 
         try {
