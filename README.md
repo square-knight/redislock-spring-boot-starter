@@ -35,9 +35,7 @@
 
 # Documentation
 
-简单的示例参照redislock-spring-boot-starter-test
-
-由于并没有把jar包上传的maven中央仓库，所以克隆项目后请使用mvn install把jar包安装到本地。
+如果想在自己的项目中使用也很简单，只要参照如下步骤：
 
 1. 依赖引入
 
@@ -48,7 +46,8 @@
             <version>1.0.0</version>
         </dependency>
 ```
-注意：Spring-boot版本要大于2.0.0
+注意：由于并没有把jar包上传的maven中央仓库，所以克隆项目后请使用mvn install把jar包安装到本地。
+Spring-boot版本要大于2.0.0
 
 2. 配置项
 
