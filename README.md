@@ -2,9 +2,7 @@
    <img src="https://github.com/square-knight/redislock-spring-boot-starter/blob/master/doc/images/logo.jpg" width="150"/>
    <h3 align="center">REDIS-LOCK</h3>
    <p align="center">
-      基于redis的分布式锁
-      </br>
-[--博客地址--](https://blog.csdn.net/litterfrog/article/details/83377589)
+      基于redis的分布式锁[--博客地址--](https://blog.csdn.net/litterfrog/article/details/83377589)
       </br>
       版本要求
       </br>
