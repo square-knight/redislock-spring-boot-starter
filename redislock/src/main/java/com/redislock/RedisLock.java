@@ -1,6 +1,7 @@
 package com.redislock;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,6 +65,10 @@ public class RedisLock {
                 keeplockAlive();
             }
         },0,heartBeat);
+    }
+    @PreDestroy
+    private void destroy(){
+        timer.cancel();
     }
     //    @Scheduled(cron = "*/10 * * * * ?")
     private void keeplockAlive(){
