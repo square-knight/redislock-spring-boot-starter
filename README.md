@@ -4,6 +4,7 @@
    <p align="center">
       基于redis的分布式锁
       </br>
+      [--博客地址--](https://blog.csdn.net/litterfrog/article/details/83377589)
       版本要求
       </br>
       spring-boot 2.0.0以上
@@ -15,7 +16,7 @@
    </p>
 </p>
 
-[--博客地址--](https://blog.csdn.net/litterfrog/article/details/83377589)
+
 
 # Introduction
 
