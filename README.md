@@ -10,7 +10,7 @@
       </br>
       spring-boot 2.0.0以上
       </br>
-      jdk 1.6以上
+      jdk 1.8以上
       </br>
       redis 2.6.12以上
       </br>
